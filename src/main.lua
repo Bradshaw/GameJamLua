@@ -10,55 +10,71 @@ function love.load(args)
 	gravity = 1000
 	frame = 0
 	started = false
+	win = false
 	
 	
 end
 
 function love.update(dt)
-	if(started) then
-		frame  = frame +3
-	
-		p.y = p.y +3
+	if(p.score > 15600) then
+		winGame()
 	end
-	if(p.x > (500-64)) then
-		p.x = (500-64)
-		p.grounded = true
-		p.yVelocity = 0
-	end
-	if(p.x < (250)) then
-		p.x = (250)
-		p.grounded = true
-		p.yVelocity = 0
-	end
-
-	if(p.y > (600-64)) then
-		gameOver()
-	end
-	if(p.yVelocity ~= 0) then
-		p.y = p.y - p.yVelocity*dt
-		p.score = p.score + p.yVelocity*dt
-		p.yVelocity = p.yVelocity - gravity*dt
-	end
-	if p.grounded then
-		p.score = 600-p.y
-	end
-
-	if love.keyboard.isDown( "right" ) then
-		if not p.grounded then
-			p.x  = p.x+p.speed*dt
+	if(not win) then
+		if(started ) then
+			frame  = frame +5
+		
+			p.y = p.y +5
+		end
+		if(p.x > (500-64)) then
+			p.x = (500-64)
+			p.grounded = true
+			p.yVelocity = 0
+		end
+		if(p.x < (250)) then
+			p.x = (250)
+			p.grounded = true
+			p.yVelocity = 0
 		end
 
-   	end
-   	if love.keyboard.isDown( "left" ) then
-		if not p.grounded then
-			p.x  = p.x-p.speed*dt
+		if(p.y > (600-64)) then
+			gameOver()
 		end
-   	end
+		if(p.yVelocity ~= 0) then
+			p.y = p.y - p.yVelocity*dt
+			if p.yVelocity > 0 then
+				p.score = frame + 600-p.y
+			end
+			p.yVelocity = p.yVelocity - gravity*dt
+		end
+
+
+		if love.keyboard.isDown( "right" ) then
+			if not p.grounded then
+				p.x  = p.x+p.speed*dt
+			end
+
+	   	end
+	   	if love.keyboard.isDown( "left" ) then
+			if not p.grounded then
+				p.x  = p.x-p.speed*dt
+			end
+	   	end
+	   	p.score = math.floor(p.score)
+	else
+		if love.keyboard.isDown( " " ) then
+			gameOver()
+		end
+	end
 
 end
 
 function love.draw()
-	love.graphics.print("lol",100,100)
+	love.graphics.setNewFont(40)
+	if(p.score < 10000) then
+		love.graphics.print(""..p.score,100,100)
+	else
+		love.graphics.print(""..p.score,75,100)
+	end
 	for i=0,table.getn(l.levelData) do
 		love.graphics.setColor(100+i, 100+i, 100+i)
 		love.graphics.rectangle("fill", 200, (600-(i+1)*tileSize)+frame , tileSize/2, tileSize)
@@ -90,4 +106,11 @@ function gameOver( )
 	p.img = love.graphics.newImage("images/flan.png")
 	started = false
 	frame = 0 
+	win = false
+end
+
+function winGame( )
+	p.yVelocity = 0
+	p.grounded = true
+	win = true
 end
