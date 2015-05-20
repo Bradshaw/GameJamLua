@@ -7,6 +7,7 @@ level.id = {
 }
 
 function level.new( )
+	math.randomseed(os.time())
 	local self = setmetatable({},{__index=level_mt})
 	self.x = 0
 	self.y = 0
@@ -19,8 +20,14 @@ function level.new( )
 	return self
 end
 function level_mt:generateLevel()
-	for i=1,155 do
-		self.levelData[i] = {x = i,type = math.floor(math.random())}
+	for i=0,155 do
+		rand = math.random()*100
+		if rand > 90 then
+			rand = 1
+		else
+			rand = 0
+		end
+		self.levelData[i] = {x = i,id = rand}
 	end
 end
 return level

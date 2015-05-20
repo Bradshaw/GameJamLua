@@ -13,6 +13,8 @@ function love.load(args)
 	win = false
 	sfx = love.audio.newSource("sound/blop.mp3", "static")
 	deathSound = love.audio.newSource("sound/death.mp3", "static")
+	piqueLeft = love.graphics.newImage("images/piqueL.png")
+	piqueRight = love.graphics.newImage("images/piqueR.png")
 	
 	
 end
@@ -81,12 +83,17 @@ function love.draw()
 		love.graphics.print(""..p.score,75,100)
 	end
 	for i=0,table.getn(l.levelData) do
-		love.graphics.setColor(100+i, 100+i, 100+i)
-		love.graphics.rectangle("fill", 200, (600-(i+1)*tileSize)+frame , tileSize/2, tileSize)
-		love.graphics.rectangle("fill", 500, (600-(i+1)*tileSize)+frame , tileSize/2, tileSize)
+		if l.levelData[i].id == 0 then 
+			love.graphics.setColor(100+i, 100+i, 100+i)
+			love.graphics.rectangle("fill", 200, (600-(i+1)*tileSize)+frame , tileSize/2, tileSize)
+			love.graphics.rectangle("fill", 500, (600-(i+1)*tileSize)+frame , tileSize/2, tileSize)
+		else
+			love.graphics.setColor(100+i, 100+i, 100+i)
+			love.graphics.draw(piqueLeft, 200, (600-(i+1)*tileSize)+frame)
+			love.graphics.draw(piqueRight, 500, (600-(i+1)*tileSize)+frame)
+		end
 		
 	end
-	print(100+(p.score/15600)*155)
 	love.graphics.setColor(100+(p.score/15600)*155, 100+(p.score/15600)*155, 100+(p.score/15600)*155)
 	
 	love.graphics.draw(p.img, p.x,p.y)
@@ -107,7 +114,7 @@ function love.keypressed(key)
 end
 
 function gameOver( )
-	print("gameOver")
+	l = level.new()
 	love.audio.stop()
 	love.audio.play(deathSound)
 	p = player.new()
@@ -126,8 +133,8 @@ end
 function testCollision()
 	top = (frame+(600-p.y))/tileSize
 	top = math.floor(top)
-	bot = (frame+(600-p.y+playerSize))/tileSize
-	bot = math.floor(top)
+	bot = (frame+((600-p.y)-playerSize))/tileSize
+	bot = math.floor(bot)
 	if(l.levelData[top].id == 1 or l.levelData[bot].id == 1) then
 		gameOver()
 	else
