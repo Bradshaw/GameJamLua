@@ -1,6 +1,10 @@
 local level_mt = {}
 local level = {}
 
+level.id = {
+	normal = 0,
+	pique = 1
+}
 
 function level.new( )
 	local self = setmetatable({},{__index=level_mt})
@@ -8,7 +12,7 @@ function level.new( )
 	self.y = 0
 	self.levelData = {
 		x =0,
-		type = 0
+		id = 0
 }
 	self:generateLevel()
 
@@ -20,5 +24,3 @@ function level_mt:generateLevel()
 	end
 end
 return level
-
-

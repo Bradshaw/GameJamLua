@@ -6,7 +6,7 @@ function player.new()
 	
 	self.x = 350
 	self.y = 400
-	self.score = 0
+	self.score = 400
 	self.yVelocity = 0
 	self.speed = 400
 	self.jumpHeight = 800

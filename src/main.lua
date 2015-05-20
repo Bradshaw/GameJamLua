@@ -27,22 +27,21 @@ function love.update(dt)
 		
 			p.y = p.y +5
 		end
-		if(p.x > (500-64)) then
-			p.x = (500-64)
+		if(p.x > (500-playerSize)) then
+			p.x = (500-playerSize)
 			p.grounded = true
 			p.yVelocity = 0
-			love.audio.stop()
-			love.audio.play(sfx)
+			testCollision()
 		end
 		if(p.x < (250)) then
 			p.x = (250)
 			p.grounded = true
 			p.yVelocity = 0
-			love.audio.stop()
-			love.audio.play(sfx)
+			testCollision()
+			
 		end
 
-		if(p.y > (600-64)) then
+		if(p.y > (600-playerSize)) then
 			gameOver()
 		end
 		if(p.yVelocity ~= 0) then
@@ -87,7 +86,8 @@ function love.draw()
 		love.graphics.rectangle("fill", 500, (600-(i+1)*tileSize)+frame , tileSize/2, tileSize)
 		
 	end
-	love.graphics.setColor(100-(p.y/tileSize), 100-(p.y/tileSize), 100-(p.y/tileSize))
+	print(100+(p.score/15600)*155)
+	love.graphics.setColor(100+(p.score/15600)*155, 100+(p.score/15600)*155, 100+(p.score/15600)*155)
 	
 	love.graphics.draw(p.img, p.x,p.y)
 	
@@ -121,4 +121,17 @@ function winGame( )
 	p.yVelocity = 0
 	p.grounded = true
 	win = true
+end
+
+function testCollision()
+	top = (frame+(600-p.y))/tileSize
+	top = math.floor(top)
+	bot = (frame+(600-p.y+playerSize))/tileSize
+	bot = math.floor(top)
+	if(l.levelData[top].id == 1 or l.levelData[bot].id == 1) then
+		gameOver()
+	else
+		love.audio.stop()
+		love.audio.play(sfx)
+	end
 end
