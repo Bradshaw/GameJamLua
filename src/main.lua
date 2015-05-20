@@ -11,6 +11,8 @@ function love.load(args)
 	frame = 0
 	started = false
 	win = false
+	sfx = love.audio.newSource("sound/blop.mp3", "static")
+	deathSound = love.audio.newSource("sound/death.mp3", "static")
 	
 	
 end
@@ -29,11 +31,15 @@ function love.update(dt)
 			p.x = (500-64)
 			p.grounded = true
 			p.yVelocity = 0
+			love.audio.stop()
+			love.audio.play(sfx)
 		end
 		if(p.x < (250)) then
 			p.x = (250)
 			p.grounded = true
 			p.yVelocity = 0
+			love.audio.stop()
+			love.audio.play(sfx)
 		end
 
 		if(p.y > (600-64)) then
@@ -102,6 +108,8 @@ end
 
 function gameOver( )
 	print("gameOver")
+	love.audio.stop()
+	love.audio.play(deathSound)
 	p = player.new()
 	p.img = love.graphics.newImage("images/flan.png")
 	started = false
