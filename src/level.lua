@@ -21,8 +21,8 @@ function level.new( )
 end
 function level_mt:generateLevel()
 	for i=0,155 do
-		rand = math.random()*100
-		if rand > 90 then
+		rand = math.random()
+		if rand > 0.9 then
 			rand = 1
 		else
 			rand = 0
