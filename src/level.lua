@@ -15,7 +15,7 @@ function level.new( )
 	return self
 end
 function level_mt:generateLevel()
-	for i=1,100 do
+	for i=1,155 do
 		self.levelData[i] = {x = i,type = math.floor(math.random())}
 	end
 end
